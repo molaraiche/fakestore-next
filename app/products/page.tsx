@@ -1,4 +1,5 @@
 'use client';
+import { storeTypes } from '@/type';
 import axios from 'axios';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -18,7 +19,7 @@ const Products = () => {
 
   return (
     <div className='flex flex-col gap-10'>
-      {products.map((product) => (
+      {products.map((product: storeTypes) => (
         <Link
           key={product.id}
           href={{
