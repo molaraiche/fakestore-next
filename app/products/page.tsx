@@ -5,20 +5,31 @@ import { useState, useEffect } from 'react';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+
   const getData = async () => {
     const response = await axios.get('https://fakestoreapi.com/products');
     const results = await response.data;
     setProducts(results);
   };
+
   useEffect(() => {
     getData();
   }, []);
-  console.log(products);
+
   return (
     <div className='flex flex-col gap-10'>
       {products.map((product) => (
-        <Link key={product.id} href={`/products/${product.id}`}>
-          {' '}
+        <Link
+          key={product.id}
+          href={{
+            pathname: `/products/${product.id}`,
+            query: {
+              title: product.title,
+              description: product.description,
+              price: product.price,
+            },
+          }}
+          passHref>
           {product.title}
         </Link>
       ))}
