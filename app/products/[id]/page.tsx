@@ -1,24 +1,32 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { storeTypes } from '@/type';
+import Image from 'next/image';
+import Link from 'next/link';
 const ProductDetails = () => {
-  const searchParams = useSearchParams();
-  const id = searchParams.get('id');
-  const title = searchParams.get('title');
-  const description = searchParams.get('description');
-  const price = searchParams.get('price');
+  const { id } = useParams();
+  const [product, setProduct] = useState<storeTypes>();
 
-  console.log(useSearchParams);
+  useEffect(() => {
+    if (id) {
+      axios
+        .get(`https://fakestoreapi.com/products/${id}`)
+        .then((response) => setProduct(response.data))
+        .catch((error) => console.error('Error fetching product:', error));
+    }
+  }, [id]);
+
+  if (!product) return <div>Loading...</div>;
 
   return (
     <div className='h-[100vh] flex items-center justify-center flex-col font-bold'>
-      <h1>{title}</h1>
-      <p>{description}</p>
-      <p>{price}</p>
+      <h1>{product.title}</h1>
+      <p>{product.description}</p>
+      <p>${product.price}</p>
+      <Image src={product.image} alt={product.title} width={100} height={100} />
       <Link href='/products'>Back</Link>
     </div>
   );

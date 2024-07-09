@@ -1,4 +1,5 @@
 'use client';
+
 import { storeTypes } from '@/type';
 import axios from 'axios';
 import Link from 'next/link';
@@ -20,17 +21,7 @@ const Products = () => {
   return (
     <div className='flex flex-col gap-10'>
       {products.map((product: storeTypes) => (
-        <Link
-          key={product.id}
-          href={{
-            pathname: `/products/${product.id}`,
-            query: {
-              title: product.title,
-              description: product.description,
-              price: product.price,
-            },
-          }}
-          passHref>
+        <Link key={product.id} href={`/products/${product.id}`} passHref>
           {product.title}
         </Link>
       ))}
